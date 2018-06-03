@@ -1,8 +1,8 @@
 #ESP8266智能门铃魔改代码
 
-智能门铃的魔改过程请访问：[blog.tffan.me/doorbell01](https://blog.tffan.me/doorbell01)
+### 智能门铃的魔改过程请访问：[blog.tffan.me/doorbell01](https://blog.tffan.me/doorbell01)
 
-本代码需要[Visual Studio Code](https://code.visualstudio.com/)或[Atom](https://atom.io/)使用[Platform IO IDE](https://platformio.org/platformio-ide)插件才能编译和烧录芯片。
+**本代码需要[Visual Studio Code](https://code.visualstudio.com/)或[Atom](https://atom.io/)使用[Platform IO IDE](https://platformio.org/platformio-ide)插件才能编译和烧录芯片。**
 
 ### 代码依赖：
 
