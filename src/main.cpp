@@ -6,15 +6,17 @@
 #include <ESP8266WiFi.h>
 
 #define NAME "doorbell_plus"
+#define WILL_INIT "online"
+#define WILL_MSG "offline"
 
-netInfo homeNet(const_mqtt_broker, const_mqtt_user, const_mqtt_user_pass, 1883,const_ssid,const_ssid_pass);
-
-ESPHelper esp(&homeNet);
-SoftwareSerial softSerial(SOFT_SERIAL_RX_PIN, SOFT_SERIAL_TX_PIN); // RX, TX
-DFRobotDFPlayerMini dfPlayer;
 int signalState = HIGH;
 unsigned long signalTime;
 char ringTopic[32];
+char willTopic[32];
+
+ESPHelper esp;
+SoftwareSerial softSerial(SOFT_SERIAL_RX_PIN, SOFT_SERIAL_TX_PIN); // RX, TX
+DFRobotDFPlayerMini dfPlayer;
 
 void mqttCallback(char *topic, uint8_t *payload, unsigned int length);
 void printDFDetail(uint8_t type, int value);
@@ -46,7 +48,10 @@ void setup()
 
   Serial.println("Setting Up ESP network.");
 
-  if (homeNet.mqttHost[0] != '\0')
+  strcpy(willTopic, NAME);
+  strcat(willTopic, "/lwt");
+
+  if (const_mqtt_broker[0] != '\0')
   {
     strcpy(ringTopic, NAME);
     strcat(ringTopic, "/ringOk");
@@ -60,7 +65,9 @@ void setup()
   esp.OTA_setPassword(const_ota_pass);
   esp.OTA_setHostnameWithVersion(NAME);
 
-  esp.begin();
+  esp.begin(const_ssid, const_ssid_pass, const_mqtt_broker, const_mqtt_user, const_mqtt_user_pass, 1883, willTopic, WILL_MSG, 0, 1);
+
+  esp.publish(willTopic, WILL_INIT);
 
   esp.listSubscriptions();
 }
@@ -93,7 +100,7 @@ void loop()
 void trigger()
 {
   Serial.println("trigger!");
-  if (homeNet.mqttHost[0] == '\0')
+  if (const_mqtt_broker[0] == '\0')
   {
     ring();
   }

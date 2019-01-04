@@ -11,6 +11,7 @@
 * PubSubClient
 * DFRobotDFPlayerMini
 * ESPHelper
+* ArduinoJson
 
 以下代码库需要手动下载并放入Platform IO的Library文件夹中
 
